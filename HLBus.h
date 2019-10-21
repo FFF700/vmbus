@@ -5,5 +5,7 @@
 #ifndef VMBUS_HLBUS_H
 #define VMBUS_HLBUS_H
 #include "typedef.h"
-void hl_bus_send(void* q,char*buf,int len);
+#include "HLQueue.h"
+void hl_bus_send(struct HLQueue * q,char*buf,int len);
+void hl_bus_add_listener(struct HLFunLink ** funs,struct HLFunLink * f);
 #endif //VMBUS_HLBUS_H

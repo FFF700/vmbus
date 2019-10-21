@@ -8,8 +8,10 @@
 struct HLUart{
     struct HLQueue* rxq;
     struct HLQueue* txq;
-    struct HLFunLink *rxc;
-    struct HLFunLink *txc;
 };
 void hl_uart_set_rx_callback(struct HLUart *huart,struct HLFunLink *f);
+void hl_uart_init();
+
+extern struct HLUart uart1;
+extern struct HLUart uart2;
 #endif //VMBUS_HLUART_H

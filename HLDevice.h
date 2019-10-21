@@ -7,8 +7,11 @@
 struct HLDevice{
     char name[8];
     void *device;
+    struct HLFunLink *rxc;
+    struct HLFunLink *txc;
     struct HLDevice *next;
 };
+struct HLDevice * hl_devices_get_device();
 struct HLDevice* hl_devices_find(char *name);
 void hl_devices_register(struct HLDevice *d);
 

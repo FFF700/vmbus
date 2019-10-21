@@ -6,8 +6,8 @@
 #define VMBUS_HLSERIAL_H
 #include "typedef.h"
 struct HLSerial{
-    struct HLLink *rxc;
-    struct HLLink *txc;
+    struct HLQueue *txq;
+    struct HLFunLink rxc;
 };
 void hl_serial_send(struct HLSerial* s,uint8_t *buf,int len);
 #endif //VMBUS_HLSERIAL_H

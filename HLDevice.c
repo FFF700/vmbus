@@ -5,7 +5,10 @@
 #include "HLDevice.h"
 #include <string.h>
 struct HLDevice *_devices;
-
+struct HLDevice * hl_devices_get_device()
+{
+    return _devices;
+}
 
 void hl_devices_register(struct HLDevice *d) {
     if(_devices==NULL)

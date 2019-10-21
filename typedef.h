@@ -5,17 +5,21 @@
 #ifndef VMBUS_TYPEDEF_H
 #define VMBUS_TYPEDEF_H
 #include <stdint.h>
+typedef  uint32_t u32;
+typedef  uint8_t u8;
+typedef  uint8_t bool;
 typedef void (*pFunUart)(void*,char*,int);
 
-struct HLQueue{
-    char buf[80];
-};
-struct HLLink{
-    struct HLQueue* q;
-    struct HLLink *next;
-};
+#define TRUE (1)
+#define FALSE (0)
+
 struct HLFunLink{
-    pFunUart q;
+    pFunUart callback;
+    void* caller;
     struct HLFunLink *next;
+};
+struct HLMsg{
+    char buf[80];
+    u8 len;
 };
 #endif //VMBUS_TYPEDEF_H
