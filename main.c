@@ -15,7 +15,7 @@ void serial1_rx(void*p,char *buf,int len)
 
 struct HLDevice duart1={"uart1",&uart1};
 struct HLDevice duart2={"uart2",&uart2};
-struct HLSerial serial1={.rxc={serial1_rx,&serial1,NULL}};
+struct HLSerial serial1={.rxc={serial1_rx,&serial1}};
 void serial_init()
 {
     struct HLDevice*p=hl_devices_find("uart2");
