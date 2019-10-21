@@ -1,92 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include "HLDevice.h"
+#include "HLSerial.h"
+#include "HLUart.h"
 
-typedef void (*pFunUart)(void*,char*,int);
-
-struct HLQueue{
-    char buf[80];
-};
-struct HLLink{
-    struct HLQueue* q;
-    struct HLLink *next;
-};
-struct HLFunLink{
-    pFunUart q;
-    struct HLFunLink *next;
-};
-struct HLUart{
-    struct HLQueue* rxq;
-    struct HLQueue* txq;
-    struct HLFunLink *rxc;
-    struct HLFunLink *txc;
-};
-struct HLSerial{
-    struct HLLink *rxc;
-    struct HLLink *txc;
-};
-struct HLDevice *_devices;
-struct HLDevice{
-    char name[8];
-    void *device;
-    struct HLDevice *next;
-};
-struct HLDevice* hl_devices_find(char *name)
-{
-    struct HLDevice *p=_devices;
-    while(p)
-    {
-        if(strcmp(p->name,name)==0)
-        {
-            return p;
-        }
-        p=p->next;
-    }
-    return NULL;
-}
-void hl_devices_register(struct HLDevice *d)
-{
-    if(_devices==NULL)
-    {
-        _devices=d;
-        return;
-    }
-    struct HLDevice *p=_devices;
-    while(p->next!=NULL)
-    {
-        p=p->next;
-    }
-    p->next=d;
-}
-
-void hl_queue_send(void* ss,uint8_t *buf,int len)
-{
-    memcpy(ss,buf,len);
-}
-void hl_uart_set_rx_callback(struct HLUart *huart,struct HLFunLink *f)
-{
-    if(huart->rxc)
-    {
-        huart->rxc=f;
-        return;
-    }
-    struct HLFunLink *p=huart->rxc;
-    while(p->next)
-    {
-        p=p->next;
-    }
-    p->next=f;
-}
-void hl_serial_send(struct HLSerial* s,uint8_t *buf,int len)
-{
-    struct HLLink *p=s->txc;
-    while (p)
-    {
-        void *h=p->q;
-        hl_queue_send(h,buf,len);
-        p=p->next;
-    }
-}
 struct HLQueue uart1_rx={"rx1"},uart1_tx={"tx1"},uart2_rx={"rx2"},uart2_tx={"tx2"};
 struct HLUart uart1={&uart1_rx,&uart1_tx},uart2={&uart2_rx,&uart2_tx};
 struct HLDevice duart1={"uart1",&uart1};
